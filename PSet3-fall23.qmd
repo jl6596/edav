@@ -1,0 +1,132 @@
+---
+title: "Problem Set 3 Fall 2023"
+author: [ADD YOUR NAMES HERE]
+execute:
+  echo: true
+format:
+  html:
+    fig-width: 6
+    fig-height: 4
+    out-width: 60%
+    embed-resources: true
+---
+
+### 1. Nutrients Revisited
+
+[7 points]
+
+data: `nutrients_pset3.csv` 
+
+a) Create a static parallel coordinates plot using `GGally::ggparcoord()` with the default scale to show trends in the variables in the dataset. Each line should represent a single food. What trends are visible?
+
+b) Redraw the graph without any scaling of the variables. What new information is visible?
+
+c) Use an interactive parallel coordinates plot to identify several prominent multivariate outliers. Indicate if any appear to be impossibilities. (You will likely need to subset the data to be able to read the names of the foods.)
+
+d) Calculate the protein, fat, and carb proportion of each food by weight. For example, buttermilk contains 9 grams protein, 5 grams fat and 13 grams carbs, the proportions are .333, .185 and .481 respectively. Draw a parallel coordinates plot using these proportions as the values for the y-axis (unscaled). Include only the Breads, Fish, and Seeds categories, with a separate color for each category. What trends do you observe?
+
+e) The dataset contains an entry with `Unknown` food and `Unknown` category. Add it to the parallel coordinate plot drawn in part d). What category does it appear to belong to?
+
+### 2. External causes of death
+
+[9 points]
+
+data: `cod.txt`
+
+Source: CDC 
+
+For this question, we will study the underlying cause of death with regard to age, gender, and race.
+
+a) Remove the rows and columns associated with the metadata (`Notes` column and rows which contained notes.) Display total deaths by `Gender`.
+
+b) For this question, we will focus on **external causes of morbidity and mortality**, indicated by `Cause of death Code` starting with V, W, X, and Y. These are the subchapters of the larger category (or "chapter"). Transform your data as follows:
+
+* Create a new column containing the first letter of the `Cause of death Code`.
+
+* Filter for V, W, X and Y. 
+
+* Add a column with a more descriptive, yet short, name for these subchapters. See: https://www.outsourcestrategies.com/blog/why-how-use-icd10-external-causes-codes.html for help. 
+
+* Remove the following since the numbers are very small: age groups `< 1 year`, `1-4 years`, `5-14 years` and `Not Stated` and racial group `American Indian or Alaska Native`. 
+
+* Shorten the race labels to `Asian`, `Black`, `White`. 
+
+Display the breakdown of deaths by subchapter using the descriptive name.
+
+*For parts c) and e), treat subchapter as the dependent variable.*
+
+c) Create mosaic plots that show the association between race and subchapter, gender and subchapter, and age and subchapter. You can either create three separate graphs or one `pairs()` plot. Which variable appears to have the strongest association with subchapter?
+
+Coding tips:
+
+A warning that none of the common methods for combining multiple plots such as `par(mfrow = ...)`, `grid.arrange()` etc. work for `mosaic()` so don't head down that route.
+
+For `pairs()` to work with mosaic plots, `library(vcd)` needs to be loaded and the data must be in table form (use `xtabs()` to convert).
+
+d) Use chi-square tests to test the relationships from part c). Do the results support what you found in the mosaic plots?
+
+e) Create a mosaic plot that best shows the relationship between subchapter, race, age, and gender. What patterns do you observe that were not visible when you only consider two variables at a time? (Given that the racial groups are very different sizes, you may want to make a separate mosaic plot for each racial group.)
+
+### 3. Alaska fire risk
+
+[7 points]
+
+data: `akff_download.csv`
+
+The data file contains information about fire and fuel related indices for 12 regions of Alaska during the last 10 days of September 2021. The data was downloaded from https://akff.mesowest.org/
+
+The chart below provides a fire risk level associated with the measures found in the data (temperature, fine fuel moisture code, etc.)
+
+![](CFFDRSThresholds.jpg){width=65%}
+
+Source: https://fire.ak.blm.gov/predsvcs/fuelfire.php
+
+a) Identify the columns in the dataset matching first eight variables in the chart and create new columns for which the numeric values are coded according to the appropriate fire danger levels (`ATF` is temperature).
+
+Display the fire danger levels for these variables for Anchorage on September 23, 2021.
+
+b) Create a single faceted heatmap showing the fire danger levels that you just created for all variables, all regions on all days. Sorting of categorical variables should be based on fire danger level.
+
+c) Identify notable trends in the data.
+
+### 4. Community districts
+
+[7 points]
+
+data: `CBDBManhattan.csv`
+
+For this question we'll use a subset of data from a survey on NYC attitudes toward various quality of life issues. The original source of the data is: [https://cbcny.org/sites/default/files/media/files/Manhattan%20Community%20District%20Results.pdf](https://cbcny.org/sites/default/files/media/files/Manhattan%20Community%20District%20Results.pdf)
+
+We will work only with the `Non-safety QoL` indicators so remove data relating to other indicator types.
+
+a) Draw a biplot of the results of a PCA analysis. In the biplot, the vectors should be the indicators and the points the community districts. You will need to transform the data to get it in the right form for this plot. To do so, use `pivot_longer()` and `pivot_wider()`. 
+
+For parts b) and c), answer based on your biplot from part a).
+
+b) Indicators
+
+* Which indicator is the most uncorrelated with `Availability of health care services`?
+
+* Which indicator is most positively correlated with `Control of street noise`?
+
+* Which indicator is most negatively correlated with `Rat control`?
+
+c) Clusters
+
+* What clusters do you observe? 
+
+* Are the districts in each cluster located near each other geographically? 
+
+* Which district(s) if any are outliers? 
+
+* Which district would you choose to live in based on the biplot?
+
+d) `Traffic`
+
+Draw another biplot of the data in which the `Traffic` variable is calibrated. 
+
+* What is the order of the projected points from lowest to highest along this dimension? 
+
+* How does this order compare to the true order found in the original data?
+
+
